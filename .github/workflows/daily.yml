@@ -1,0 +1,30 @@
+name: Daily Commit by 23f2003992@ds.study.iitm.ac.in
+
+on:
+  schedule:
+    - cron: '0 22 * * *'  # 10PM UTC daily
+  workflow_dispatch:
+
+permissions:
+  contents: write  # ← THIS FIXES commit permission
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+
+      - name: Create update by 23f2003992@ds.study.iitm.ac.in
+        run: |
+          echo "# Daily Status\n\n$(date)" > STATUS.md
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "23f2003992@ds.study.iitm.ac.in"
+          git add STATUS.md
+          git commit -m "Daily update $(date)"
+          git push
